@@ -1,0 +1,114 @@
+# this is the labs captcha API
+# as a specification in YAML
+swagger: '2.0'
+info:
+  title: Labs Captcha API
+  description: Reinventing the wheel to comply with the Labs ToU.
+  version: "1.0.0"
+# the domain of the service
+host: tools.wmflabs.org
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /labs-captcha
+produces:
+  - application/json
+paths:
+  /generate:
+    get:
+      summary: Generate captcha
+      description: The generate endpoint returns a captcha image. The response includes the base64 encoded image of a captcha and a code to verify the captcha using the verify endpoint.
+      parameters:
+      - name: key
+        in: query
+        description: API key to authenticate.
+        required: true
+        type: string
+        format: byte
+      tags:
+        - Generate
+      responses:
+        200:
+          description: An array of a captcha and a verify code.
+          schema:
+            $ref: '#/definitions/Generate'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /verify:
+    get:
+      summary: Verify user input
+      description: 
+        The verify endpoint returns a boolean stating whether the input given matches the captcha response for the verify code given.
+      parameters:
+        - name: code
+          in: query
+          type: string
+          description: Verify code for captcha you want to verify. Is deleted from system when used.
+          required: true
+        - name: key
+          in: query
+          description: API key to authenticate.
+          required: true
+          type: string
+          format: byte
+      tags:
+        - Verify
+      responses:
+        200:
+          description: A boolean stating whether captcha id output and query input match
+          schema:
+            $ref: '#/definitions/Verify'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /version:
+    get:
+      summary: API version
+      description: 
+        Returns the Git commit hash that the API server is using.
+      tags:
+        - Version
+      responses:
+        200:
+          description: Git commit hash
+          schema:
+            $ref: '#/definitions/Version'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Generate:
+    type: object
+    properties:
+      captcha_id:
+        type: string
+        description: Unique identifier for captcha contents to verify input later.
+      captcha_image:
+        type: string
+        format: byte
+        description: Base64 encoded image of a captcha corresponding to the id given.
+  Verify:
+    type: object
+    properties:
+      match:
+        type: boolean
+        description: Boolean for captcha id and input comparison
+  Version:
+    type: object
+    properties:
+      commit_hash:
+        type: string
+        description:  Commit hash.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

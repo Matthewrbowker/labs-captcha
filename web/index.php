@@ -5,7 +5,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 $app = new Silex\Application();
 
 // ... definitions
-$app->get('/hello/{name}', function ($name) use ($app) {
+$app->get('/captcha-dev/hello/{name}', function ($name) use ($app) {
     return 'Hello '.$app->escape($name);
 });
 
