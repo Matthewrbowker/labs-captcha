@@ -5,4 +5,5 @@
 [![GitHub forks](https://img.shields.io/github/forks/labs-captcha/captcha.svg)](https://github.com/labs-captcha/captcha/network)
 [![GitHub stars](https://img.shields.io/github/stars/labs-captcha/captcha.svg)](https://github.com/labs-captcha/captcha/stargazers)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/labs-captcha/captcha/new/LICENSE)
+</br>
 [Documentation](http://docs.labscaptchaapi.apiary.io/)
