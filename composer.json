@@ -1,6 +1,7 @@
 {
     "require": {
         "silex/silex": "~2.0",
-        "ramsey/uuid": "^3.4"
+        "ramsey/uuid": "^3.4",
+        "auth0/auth0-php": "3.3.5"
     }
 }
