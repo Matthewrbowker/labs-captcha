@@ -3,6 +3,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Gregwar\Captcha\CaptchaBuilder;
+use Ramsey\Uuid\Uuid;
 
 $app = new Silex\Application();
 $builder = new CaptchaBuilder;
