@@ -2,6 +2,7 @@
     "require": {
         "silex/silex": "~2.0",
         "php": "~5.5.9",
-        "gregwar/captcha": "^1.1"
+        "gregwar/captcha": "^1.1",
+        "ramsey/uuid": "^3.4"
     }
 }

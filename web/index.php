@@ -6,15 +6,16 @@ use Gregwar\Captcha\CaptchaBuilder;
 
 $app = new Silex\Application();
 $builder = new CaptchaBuilder;
+$uuid = Uuid::uuid4();
 
 // definitions
 $app->get('/', function () {
     return 'Hello!';
 });
 
-$app->get('/captcha/', function () use ($app,$builder) {
+$app->get('/captcha/', function () use ($app,$builder,$uuid) {
     $builder->build();
-    return $app->json(array('image' => $builder->inline()));
+    return $app->json(array('image' => $builder->inline(), 'uuid' => $uuid->toString()));
 });
 
 $app->post('/captcha/', function () use ($app) {
