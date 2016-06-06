@@ -14,7 +14,7 @@ $app->get('/', function () {
 
 $app->get('/captcha/', function () use ($app,$builder) {
     $builder->build();
-    return $app->json(array('image' => $builder->output()));
+    return $app->json(array('image' => $builder->inline()));
 });
 
 $app->post('/captcha/', function () use ($app) {
