@@ -12,7 +12,7 @@ $app->get('/', function () {
     return 'Hello!';
 });
 
-$app->post('/captcha/', function () use ($app,$builder) {
+$app->get('/captcha/', function () use ($app,$builder) {
     $builder->build();
     return $app->json(array('image' => $builder->output()));
 });
