@@ -9,15 +9,15 @@ $app->get('/', function () {
     return 'Hello!';
 });
 
-$app->post('/captcha-dev/generate/', function () {
+$app->post('/generate/', function () {
     return 'Hello, this is the (future) generator!';
 });
 
-$app->get('/captcha-dev/verify/', function () use ($app) {
+$app->get('/verify/', function () use ($app) {
     return $app->json(array('match' => rand(0,1) == 1));
 });
 
-$app->get('/captcha-dev/version/', function () use ($app) {
+$app->get('/version/', function () use ($app) {
     return $app->json(array('hash' => exec('git log --pretty="%H" -n1 HEAD')));
 });
 
