@@ -45,13 +45,13 @@ $app->get('/version/', function () use ($app) {
     return $app->json(array('hash' => exec('git log --pretty="%H" -n1 HEAD')));
 });
 
-$app->get('/blog/{id}', function ($id) use ($app) {
-    $sql = "SELECT * FROM posts WHERE id = ?";
-    $post = $app['db']->fetchAssoc($sql, array((int) $id));
+//$app->get('/blog/{id}', function ($id) use ($app) {
+//    $sql = "SELECT * FROM posts WHERE id = ?";
+//    $post = $app['db']->fetchAssoc($sql, array((int) $id));
 
-    return  "<h1>{$post['title']}</h1>".
-            "<p>{$post['body']}</p>";
-});
+//    return  "<h1>{$post['title']}</h1>".
+//            "<p>{$post['body']}</p>";
+//});
 
 $app['debug'] = true;
 $app->run();
