@@ -9,20 +9,9 @@ $app = new Silex\Application();
 $builder = new CaptchaBuilder;
 $uuid = Uuid::uuid4();
 
-$url = parse_url(getenv("DATABASE_URL"));
-
-$host = $url["host"];
-$user = $url["user"];
-$password = $url["pass"];
-$dbname = substr($url["path"], 1);
-
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
-        'driver'   => 'pdo_pgsql',
-        'host'     => $host,
-        'dbname'   => $dbname,
-        'user'     => $user,
-        'password' => $password,
+        'url' => getenv("DATABASE_URL"),
     ),
 ));
 
@@ -33,25 +22,27 @@ $app->get('/', function () {
 
 $app->get('/captcha/', function () use ($app,$builder,$uuid) {
     $builder->build();
+    $actualuuid = $uuid->toString();
     $hash = password_hash($builder->getPhrase(), PASSWORD_DEFAULT);
-    return $app->json(array('uuid'  => $uuid->toString(), 'image' => $builder->inline()));
+    $app['db']->executeUpdate('INSERT INTO captchas (uuid,hashed) VALUES (?,?);', array($actualuuid, password_hash($builder->getPhrase(), PASSWORD_DEFAULT)));
+    return $app->json(array('uuid'  => $actualuuid, 'image' => $builder->inline()), 201);
 });
 
-$app->post('/captcha/', function () use ($app) {
-    return $app->json(array('match' => rand(0,1) == 1));
+$app->post('/captcha/{uuid}/{text}', function ($uuid,$text) use ($app) {
+    return $app->json(array('match' => password_verify($text, $app['db']->fetchAssoc('SELECT hashed FROM captchas WHERE uuid = ?;', array((text) $uuid)))));
 });
 
-$app->get('/version/', function () use ($app) {
-    return $app->json(array('hash' => exec('git log --pretty="%H" -n1 HEAD')));
-});
+//$app->get('/version/', function () use ($app) {
+//    return $app->json(array('hash' => exec('git log --pretty="%H" -n1 HEAD')));
+//});
 
-$app->get('/blog/{id}', function ($id) use ($app) {
-    $sql = "SELECT * FROM posts WHERE id = ?";
-    $post = $app['db']->fetchAssoc($sql, array((int) $id));
-
-    return  "<h1>{$post['title']}</h1>".
-            "<p>{$post['body']}</p>";
-});
+//$app->get('/blog/{id}', function ($id) use ($app) {
+//    $sql = "SELECT * FROM posts WHERE id = ?";
+//    $post = $app['db']->fetchAssoc($sql, array((int) $id));
+//
+//    return  "<h1>{$post['title']}</h1>".
+//            "<p>{$post['body']}</p>";
+//});
 
 $app['debug'] = true;
 $app->run();
