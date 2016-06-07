@@ -9,6 +9,23 @@ $app = new Silex\Application();
 $builder = new CaptchaBuilder;
 $uuid = Uuid::uuid4();
 
+$url = parse_url(getenv("DATABASE_URL"));
+
+$host = $url["host"];
+$user = $url["user"];
+$password = $url["pass"];
+$dbname = substr($url["path"], 1);
+
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+    'db.options' => array(
+        'driver'   => 'pdo_pgsql',
+        'host'     => $host,
+        'dbname'   => $dbname,
+        'user'     => $user,
+        'password' => $password,
+    ),
+));
+
 // definitions
 $app->get('/', function () {
     return 'Hello!';
@@ -16,7 +33,8 @@ $app->get('/', function () {
 
 $app->get('/captcha/', function () use ($app,$builder,$uuid) {
     $builder->build();
-    return $app->json(array('image' => $builder->inline(), 'uuid' => $uuid->toString()));
+    password_hash($builder->getPhrase(), PASSWORD_DEFAULT)
+    return $app->json(array('uuid' => $uuid->toString(), 'image' => $builder->inline()));
 });
 
 $app->post('/captcha/', function () use ($app) {
@@ -25,6 +43,14 @@ $app->post('/captcha/', function () use ($app) {
 
 $app->get('/version/', function () use ($app) {
     return $app->json(array('hash' => exec('git log --pretty="%H" -n1 HEAD')));
+});
+
+$app->get('/blog/{id}', function ($id) use ($app) {
+    $sql = "SELECT * FROM posts WHERE id = ?";
+    $post = $app['db']->fetchAssoc($sql, array((int) $id));
+
+    return  "<h1>{$post['title']}</h1>".
+            "<p>{$post['body']}</p>";
 });
 
 $app['debug'] = true;
