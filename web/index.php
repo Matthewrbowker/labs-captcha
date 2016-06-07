@@ -9,22 +9,22 @@ $app = new Silex\Application();
 $builder = new CaptchaBuilder;
 $uuid = Uuid::uuid4();
 
-$url = parse_url(getenv("DATABASE_URL"));
+//$url = parse_url(getenv("DATABASE_URL"));
 
-$host = $url["host"];
-$user = $url["user"];
-$password = $url["pass"];
-$dbname = substr($url["path"], 1);
+//$host = $url["host"];
+//$user = $url["user"];
+//$password = $url["pass"];
+//$dbname = substr($url["path"], 1);
 
-$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-    'db.options' => array(
-        'driver'   => 'pdo_pgsql',
-        'host'     => $host,
-        'dbname'   => $dbname,
-        'user'     => $user,
-        'password' => $password,
-    ),
-));
+//$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+//    'db.options' => array(
+//        'driver'   => 'pdo_pgsql',
+//        'host'     => $host,
+//        'dbname'   => $dbname,
+//        'user'     => $user,
+//        'password' => $password,
+//    ),
+//));
 
 // definitions
 $app->get('/', function () {
@@ -45,13 +45,13 @@ $app->get('/version/', function () use ($app) {
     return $app->json(array('hash' => exec('git log --pretty="%H" -n1 HEAD')));
 });
 
-//$app->get('/blog/{id}', function ($id) use ($app) {
-//    $sql = "SELECT * FROM posts WHERE id = ?";
-//    $post = $app['db']->fetchAssoc($sql, array((int) $id));
+$app->get('/blog/{id}', function ($id) use ($app) {
+    $sql = "SELECT * FROM posts WHERE id = ?";
+    $post = $app['db']->fetchAssoc($sql, array((int) $id));
 
-//    return  "<h1>{$post['title']}</h1>".
-//            "<p>{$post['body']}</p>";
-//});
+    return  "<h1>{$post['title']}</h1>".
+            "<p>{$post['body']}</p>";
+});
 
 $app['debug'] = true;
 $app->run();
