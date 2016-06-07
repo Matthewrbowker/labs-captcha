@@ -9,22 +9,22 @@ $app = new Silex\Application();
 $builder = new CaptchaBuilder;
 $uuid = Uuid::uuid4();
 
-//$url = parse_url(getenv("DATABASE_URL"));
+$url = parse_url(getenv("DATABASE_URL"));
 
-//$host = $url["host"];
-//$user = $url["user"];
-//$password = $url["pass"];
-//$dbname = substr($url["path"], 1);
+$host = $url["host"];
+$user = $url["user"];
+$password = $url["pass"];
+$dbname = substr($url["path"], 1);
 
-//$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-//    'db.options' => array(
-//        'driver'   => 'pdo_pgsql',
-//        'host'     => $host,
-//        'dbname'   => $dbname,
-//        'user'     => $user,
-//        'password' => $password,
-//    ),
-//));
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+    'db.options' => array(
+        'driver'   => 'pdo_pgsql',
+        'host'     => $host,
+        'dbname'   => $dbname,
+        'user'     => $user,
+        'password' => $password,
+    ),
+));
 
 // definitions
 $app->get('/', function () {
@@ -33,8 +33,8 @@ $app->get('/', function () {
 
 $app->get('/captcha/', function () use ($app,$builder,$uuid) {
     $builder->build();
-    password_hash($builder->getPhrase(), PASSWORD_DEFAULT)
-    return $app->json(array('uuid' => $uuid->toString(), 'image' => $builder->inline()));
+    $hash = password_hash($builder->getPhrase(), PASSWORD_DEFAULT);
+    return $app->json(array('uuid'  => $uuid->toString(), 'image' => $builder->inline()));
 });
 
 $app->post('/captcha/', function () use ($app) {
