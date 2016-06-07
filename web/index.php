@@ -29,7 +29,7 @@ $app->get('/captcha/', function () use ($app,$builder,$uuid) {
 });
 
 $app->post('/captcha/{uuid}/{text}', function ($uuid,$text) use ($app) {
-    $hashed = $app['db']->fetchAssoc('SELECT hashed FROM captchas WHERE uuid = ?;', array((text) $uuid));
+    $hashed = $app['db']->fetchAssoc('SELECT hashed FROM captchas WHERE uuid = ?;', array($uuid));
     return $app->json(array('match' => password_verify($text, $hashed)));
 });
 
