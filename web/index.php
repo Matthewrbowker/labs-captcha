@@ -26,9 +26,10 @@ $app->before(function (Request $request, Application $app) {
 
     // validate the token
     $userworking = $app['db']->fetchAssoc('SELECT activated FROM keys WHERE key = ?;', array($app->escape($authorizationHeader)));
-    if ($userworking) {
-        return new Response('Invalid API key.', 401);
+    if ($userworking['activated'] != true) {
+        return new Response('Invalid/deactivated API key.', 401);
     }
+    
 });
 
 $app->get('/', function () {
