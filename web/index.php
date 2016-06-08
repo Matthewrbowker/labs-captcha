@@ -16,6 +16,26 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 ));
 
 // definitions
+
+$app->before(function (Request $request, Application $app) {
+    $authorizationHeader = $request->headers->get('Authorization');
+
+    if ($authorizationHeader == null) {
+        return new Response('No authorisation header sent.', 401);
+    }
+
+    // validate the token
+    $token = str_replace('Bearer ', '', $authorizationHeader);
+    $secret = getenv("AUTH_SECRET");
+    $client_id = getenv("AUTH_ID");
+    $decoded_token = null;
+    try {
+        $decoded_token = \Auth0\SDK\Auth0JWT::decode($token,$client_id,$secret );
+    } catch(\Auth0\SDK\Exception\CoreException $e) {
+        return new Response('Invilid token.', 401);
+    }
+});
+
 $app->get('/', function () {
     return 'Hello!';
 });
@@ -28,22 +48,14 @@ $app->get('/captcha/', function () use ($app,$builder,$uuid) {
     return $app->json(array('uuid'  => $actualuuid, 'image' => $builder->inline()), 201);
 });
 
-$app->post('/captcha/{uuid}/{text}', function ($uuid,$text) use ($app) {
-    $hashed = $app['db']->fetchAssoc('SELECT hashed FROM captchas WHERE uuid = ?;', array($uuid));
-    return $app->json(array('match' => password_verify($text, $hashed['hashed'])));
+$app->post('/captcha/{uuid}/{text}/', function ($uuid,$text) use ($app) {
+    $hashed = $app['db']->fetchAssoc('SELECT hashed FROM captchas WHERE uuid = ?;', array($app->escape($uuid)));
+    return $app->json(array('match' => password_verify($app->escape($text), $hashed['hashed'])));
 });
 
-//$app->get('/version/', function () use ($app) {
-//    return $app->json(array('hash' => exec('git log --pretty="%H" -n1 HEAD')));
-//});
+$app->get('/version/', function () use ($app) {
+    return $app->json(array('hash' => getenv("SOURCE_VERSION")));
+});
 
-//$app->get('/blog/{id}', function ($id) use ($app) {
-//    $sql = "SELECT * FROM posts WHERE id = ?";
-//    $post = $app['db']->fetchAssoc($sql, array((int) $id));
-//
-//    return  "<h1>{$post['title']}</h1>".
-//            "<p>{$post['body']}</p>";
-//});
-
-$app['debug'] = true;
+$app['debug'] = getenv(DEBUG);
 $app->run();
