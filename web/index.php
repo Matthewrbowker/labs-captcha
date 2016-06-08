@@ -6,7 +6,7 @@ use Gregwar\Captcha\CaptchaBuilder;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 //use Silex\Application;
-//use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 $app = new Silex\Application();
 $builder = new CaptchaBuilder;
