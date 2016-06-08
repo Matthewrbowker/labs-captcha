@@ -25,14 +25,9 @@ $app->before(function (Request $request, Application $app) {
     }
 
     // validate the token
-    $token = str_replace('Bearer ', '', $authorizationHeader);
-    $secret = getenv("AUTH_SECRET");
-    $client_id = getenv("AUTH_ID");
-    $decoded_token = null;
-    try {
-        $decoded_token = \Auth0\SDK\Auth0JWT::decode($token,$client_id,$secret );
-    } catch(\Auth0\SDK\Exception\CoreException $e) {
-        return new Response('Invilid token.', 401);
+    $userworking = $app['db']->fetchAssoc('SELECT activated FROM keys WHERE key = ?;', array($app->escape($authorizationHeader)));
+    if ($userworking) {
+        return new Response('Invalid API key.', 401);
     }
 });
 
