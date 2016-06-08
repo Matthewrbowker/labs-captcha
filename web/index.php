@@ -4,6 +4,9 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use Gregwar\Captcha\CaptchaBuilder;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Response;
 
 $app = new Silex\Application();
 $builder = new CaptchaBuilder;
@@ -53,5 +56,5 @@ $app->get('/version/', function () use ($app) {
     return $app->json(array('hash' => getenv("SOURCE_VERSION")));
 });
 
-$app['debug'] = getenv(DEBUG);
+$app['debug'] = getenv('DEBUG');
 $app->run();
