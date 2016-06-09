@@ -3,7 +3,6 @@
         "silex/silex": "~2.0",
         "gregwar/captcha": "^1.1",
         "ramsey/uuid": "^3.4",
-        "doctrine/dbal": "~2.2",
-        "auth0/auth0-php": "^3.3"
+        "doctrine/dbal": "~2.2"
     }
 }
