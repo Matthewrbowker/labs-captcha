@@ -4,16 +4,28 @@ HOST: https://tools.wmflabs.org/captcha-dev
 # Labs Captcha API
 Reinventing the wheel to comply with the Labs Terms of Use.
 
+## Authentication tester [/]
+
+### Hello! [GET]
+Returns Hello to test the authentication.
+
++ Response 200 (text/plain)
+
+    + Body
+    
+              Hello!
+    
+
 ## Captcha management [/captcha/{uuid}]
-### Generate captcha [POST]
+### Generate captcha [GET]
 Generate a captcha that can be verified with the verify endpoint.
 + Response 200 (application/json)
 
     + Body
     
             {
-                "image": "1236b96e80c21ad64ce53d9d37fccfa31734d8007cafec44dace76c24585b11dd76c8bacbab2c9af50adaa1974b57034",
-                "uuid": "6c53954a-314c-42c5-a926-249fe6c94781"
+                "uuid": "6c53954a-314c-42c5-a926-249fe6c94781",
+                "image": "1236b96e80c21ad64ce53d9d37fccfa31734d8007cafec44dace76c24585b11dd76c8bacbab2c9af50adaa1974b57034"
             }
             
     + Schema
@@ -22,13 +34,13 @@ Generate a captcha that can be verified with the verify endpoint.
                 "$schema": "http://json-schema.org/draft-04/schema#",
                 "type": "object",
                 "properties": {
-                    "code": {
-                        "type": "string",
-                        "description": "Base64 encoded image of the captcha corresponding to the UUID also in the response."
-                    },
-                    "message": {
+                    "image": {
                         "type": "string",
                         "description": "Unique identifier for captcha contents to verify input later."
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "description": "Base64 encoded image of the captcha corresponding to the UUID also in the response."
                     }
                 }
             }
@@ -59,7 +71,7 @@ Generate a captcha that can be verified with the verify endpoint.
                 }
             }
 
-### Verify captcha [GET]
+### Verify captcha [POST]
 Verify user input using a UUID from the generate endpoint.
 + Parameters
     + uuid (required)
@@ -160,16 +172,3 @@ Returns the hash of the Git commit that the server is running on.
                     }
                 }
             }
-
-## Data Structures
-### Generate (object)
-#### Properties
-+ `captcha_id` (string, optional) - Unique identifier for captcha contents to verify input later.
-+ `captcha_image` (string, optional) - Base64 encoded image of a captcha corresponding to the id given.
-
-### Verify (object)
-
-
-### Version (object)
-#### Properties
-+ `commit_hash` (string, optional) - Commit hash.
