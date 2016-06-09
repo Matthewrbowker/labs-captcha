@@ -4,6 +4,9 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use Gregwar\Captcha\CaptchaBuilder;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Response;
 
 $app = new Silex\Application();
 $builder = new CaptchaBuilder;
@@ -26,9 +29,10 @@ $app->before(function (Request $request, Application $app) {
 
     // validate the token
     $userworking = $app['db']->fetchAssoc('SELECT activated FROM keys WHERE key = ?;', array($app->escape($authorizationHeader)));
-    if ($userworking) {
-        return new Response('Invalid API key.', 401);
+    if ($userworking['activated'] != true) {
+        return new Response('Invalid/deactivated API key.', 401);
     }
+    
 });
 
 $app->get('/', function () {
@@ -52,5 +56,5 @@ $app->get('/version/', function () use ($app) {
     return $app->json(array('hash' => getenv("SOURCE_VERSION")));
 });
 
-$app['debug'] = getenv(DEBUG);
+$app['debug'] = getenv('DEBUG');
 $app->run();
