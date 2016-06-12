@@ -5,13 +5,14 @@ HOST: https://tools.wmflabs.org/captcha/api/
 Reinventing the wheel to comply with the Labs Terms of Use.
 
 ## Authentication
+To authenticate to the API, you will need an API key. This is passed into the API with an Authorization HTTP header, like so:
 ```http
 Authorization: b0ea5efcf8c3451aba0b3a38a0acdd08
 ```
-**Note: This API key is an example, and will not work.**
-*If you need an API key for your tool, please ask tom29739.*
+API keys can be obtained from tom29739.  
+**Note: The API key above is an example, and will not work.**
 
-# Endpoints
+# Group Endpoints
 
 ## Authentication tester [/]
 
@@ -21,9 +22,9 @@ Returns Hello to test the authentication.
 + Response 200 (text/plain)
 
     + Body
-    
+
               Hello!
-    
+
 
 ## Captcha management [/captcha/{uuid}]
 ### Generate captcha [GET]
@@ -31,14 +32,14 @@ Generate a captcha that can be verified with the verify endpoint.
 + Response 200 (application/json)
 
     + Body
-    
+
             {
                 "uuid": "6c53954a-314c-42c5-a926-249fe6c94781",
                 "image": "1236b96e80c21ad64ce53d9d37fccfa31734d8007cafec44dace76c24585b11dd76c8bacbab2c9af50adaa1974b57034"
             }
-            
+
     + Schema
-    
+
             {
                 "$schema": "http://json-schema.org/draft-04/schema#",
                 "type": "object",
@@ -57,14 +58,14 @@ Generate a captcha that can be verified with the verify endpoint.
 + Response 500 (application/json)
 
     + Body
-    
+
             {
                 "code": 929,
                 "message": "Unable to generate captcha."
             }
-            
+
     + Schema
-    
+
             {
                 "$schema": "http://json-schema.org/draft-04/schema#",
                 "type": "object",
@@ -90,11 +91,11 @@ Verify user input using a UUID from the generate endpoint.
 + Response 200 (application/json)
 
     + Body
-    
+
             { "match": true }
-    
+
     + Schema
-    
+
             {
                 "$schema": "http://json-schema.org/draft-04/schema#",
                 "type": "object",
@@ -109,14 +110,14 @@ Verify user input using a UUID from the generate endpoint.
 + Response 500 (application/json)
 
     + Body
-    
+
             {
                 "code": 172,
                 "message": "The verify UUID is invalid or does not exist."
             }
-            
+
     + Schema
-    
+
             {
                 "$schema": "http://json-schema.org/draft-04/schema#",
                 "type": "object",
@@ -140,11 +141,11 @@ Returns the hash of the Git commit that the server is running on.
 + Response 200 (application/json)
 
     + Body
-    
+
               { "hash": "7fa4c4d1af505096ec206211a9e4742550fb864e" }
-    
+
     + Schema
-    
+
             {
                 "$schema": "http://json-schema.org/draft-04/schema#",
                 "type": "object",
@@ -159,14 +160,14 @@ Returns the hash of the Git commit that the server is running on.
 + Response 500 (application/json)
 
     + Body
-    
+
             {
                 "code": 814,
                 "message": "Unable to run command to find current Git commit hash."
             }
-            
+
     + Schema
-    
+
             {
                 "$schema": "http://json-schema.org/draft-04/schema#",
                 "type": "object",
