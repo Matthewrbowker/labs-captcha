@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "01d15aaba04c53ea029311824098aa85",
-    "content-hash": "395e1298aeec6609fc4323d2b0606c6c",
+    "hash": "351ea29f16c5173fbf097d6da00e4db1",
+    "content-hash": "b32a057b075aeb01c6eb5ed39e02924a",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1207,56 +1207,7 @@
             "time": "2016-05-30 06:58:39"
         }
     ],
-    "packages-dev": [
-        {
-            "name": "ddelnano/dredd-hooks-php",
-            "version": "1.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ddelnano/dredd-hooks-php.git",
-                "reference": "2d16826709d63c3a3face0545ff25e0b34f825c5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ddelnano/dredd-hooks-php/zipball/2d16826709d63c3a3face0545ff25e0b34f825c5",
-                "reference": "2d16826709d63c3a3face0545ff25e0b34f825c5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "^2.5"
-            },
-            "bin": [
-                "bin/dredd-hooks-php"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Dredd\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Domenic Del Nano",
-                    "email": "ddelnano@gmail.com"
-                }
-            ],
-            "description": "PHP hooks for the Dredd testing tool",
-            "homepage": "https://github.com/ddelnano/dredd-hooks-php/wiki",
-            "keywords": [
-                "dredd"
-            ],
-            "time": "2016-05-15 17:30:06"
-        }
-    ],
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
