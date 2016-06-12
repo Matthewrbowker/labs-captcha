@@ -12,9 +12,6 @@ $app = new Silex\Application();
 $builder = new CaptchaBuilder;
 $uuid = Uuid::uuid4();
 
-if (isset(SOURCE_VERSION) != True)
-    putenv("SOURCE_VERSION=".exec('git log -1 --format="%H"'));
-
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'url' => getenv("DATABASE_URL"),
@@ -56,6 +53,8 @@ $app->post('/captcha/{uuid}/{text}/', function ($uuid,$text) use ($app) {
 });
 
 $app->get('/version/', function () use ($app) {
+    if (getenv('SOURCE_VERSION') != True)
+        putenv("SOURCE_VERSION=".exec('git log -1 --format="%H"'));
     return $app->json(array('hash' => getenv("SOURCE_VERSION")));
 });
 

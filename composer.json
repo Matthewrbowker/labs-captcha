@@ -4,5 +4,8 @@
         "gregwar/captcha": "^1.1",
         "ramsey/uuid": "^3.4",
         "doctrine/dbal": "~2.2"
+    },
+    "require-dev": {
+        "ddelnano/dredd-hooks-php": "^1.1"
     }
 }
