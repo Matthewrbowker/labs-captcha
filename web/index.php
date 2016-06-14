@@ -1,6 +1,6 @@
 <?php
 // web/index.php
-require_once __DIR__.'/../../captcha/vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 use Gregwar\Captcha\CaptchaBuilder;
 use Ramsey\Uuid\Uuid;
