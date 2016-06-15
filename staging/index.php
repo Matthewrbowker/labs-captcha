@@ -19,8 +19,40 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 ));
 
 // definitions
-
 $securitykeybefore = function (Request $request, Application $app) {
+    $authorizationHeader = $request->headers->get('Authorization');
+
+    return new Response('Authorization header:'.$authorizationHeader, 401);
+
+    if ($authorizationHeader == null) {
+        return new Response('No authorisation header sent. (key)', 401);
+    };
+
+    // validate the token
+    $userworking = $app['db']->fetchAssoc('SELECT `activated` FROM `keys` WHERE `key` = ?;', array($app->escape($authorizationHeader)));
+    if ($userworking['activated'] != true) {
+        return new Response('Invalid/deactivated API key.', 401);
+    };
+    
+};
+
+$securitysecretbefore = function (Request $request, Application $app) {
+    $authorizationHeader = $request->headers->get('Authorization');
+
+    if ($authorizationHeader == null) {
+        return new Response('No authorisation header sent. (key)', 401);
+    };
+
+    // validate the token
+    $userworking = $app['db']->fetchAssoc('SELECT `activated` FROM `keys` WHERE `secret` = ?;', array($app->escape($authorizationHeader)));
+    if ($userworking['activated'] != true) {
+        return new Response('Invalid/deactivated API secret.', 401);
+    };
+
+};
+
+/*
+$app->before(function (Request $request, Application $app) {
     $authorizationHeader = $request->headers->get('Authorization');
 
     if ($authorizationHeader == null) {
@@ -32,23 +64,9 @@ $securitykeybefore = function (Request $request, Application $app) {
     if ($userworking['activated'] != true) {
         return new Response('Invalid/deactivated API key.', 401);
     }
-    
-};
 
-$securitysecretbefore = function (Request $request, Application $app) {
-    $authorizationHeader = $request->headers->get('Authorization');
-
-    if ($authorizationHeader == null) {
-        return new Response('No authorisation header sent.', 401);
-    }
-
-    // validate the token
-    $userworking = $app['db']->fetchAssoc('SELECT `activated` FROM `keys` WHERE `secret` = ?;', array($app->escape($authorizationHeader)));
-    if ($userworking['activated'] != true) {
-        return new Response('Invalid/deactivated API key.', 401);
-    }
-
-};
+});
+*/
 
 $app->get('/', function () {
     return 'Hello!';
@@ -60,6 +78,7 @@ $app->get('/captcha/', function () use ($app,$builder,$uuid) {
 //    $hash = password_hash($builder->getPhrase(), PASSWORD_DEFAULT);
 //    $app['db']->executeUpdate('INSERT INTO `captchas` (`uuid`,`hashed`) VALUES (?,?);', array($actualuuid, password_hash($builder->getPhrase(), PASSWORD_DEFAULT)));
     return $app->json(array('uuid'  => $actualuuid, 'image' => $builder->inline()), 201);
+//    return new Response('Authorization header:'.$authorizationHeader, 401);
 })
 ->before($securitykeybefore);
 
@@ -76,5 +95,5 @@ $app->get('/version/', function () use ($app) {
     return $app->json(array('hash' => getenv("SOURCE_VERSION")));
 });
 
-$app['debug'] = getenv('DEBUG');
+//$app['debug'] = getenv('DEBUG');
 $app->run();

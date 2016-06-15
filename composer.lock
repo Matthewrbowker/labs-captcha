@@ -738,16 +738,16 @@
         },
         {
             "name": "silex/silex",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "cf02a560d2d87aa4381b3c72d783fcf3aef2434f"
+                "reference": "7420ac96195ea7eb6f1e11dc273be49359dd50ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/cf02a560d2d87aa4381b3c72d783fcf3aef2434f",
-                "reference": "cf02a560d2d87aa4381b3c72d783fcf3aef2434f",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/7420ac96195ea7eb6f1e11dc273be49359dd50ad",
+                "reference": "7420ac96195ea7eb6f1e11dc273be49359dd50ad",
                 "shasum": ""
             },
             "require": {
@@ -779,6 +779,7 @@
                 "symfony/intl": "~2.8|^3.0",
                 "symfony/monolog-bridge": "~2.8|^3.0",
                 "symfony/options-resolver": "~2.8|^3.0",
+                "symfony/phpunit-bridge": "~2.8|^3.0",
                 "symfony/process": "~2.8|^3.0",
                 "symfony/security": "~2.8|^3.0",
                 "symfony/serializer": "~2.8|^3.0",
@@ -818,7 +819,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2016-05-27 11:37:31"
+            "time": "2016-06-14 09:27:51"
         },
         {
             "name": "symfony/debug",

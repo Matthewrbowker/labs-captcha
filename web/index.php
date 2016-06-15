@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 $app = new Silex\Application();
 $builder = new CaptchaBuilder;
 $uuid = Uuid::uuid4();
+$ignoreAllEffects = true
+$builder->setIgnoreAllEffects($ignoreAllEffects);
+$builder->build();
 
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
@@ -40,10 +43,9 @@ $app->get('/', function () {
 });
 
 $app->get('/captcha/', function () use ($app,$builder,$uuid) {
-    $builder->build();
     $actualuuid = $uuid->toString();
     $hash = password_hash($builder->getPhrase(), PASSWORD_DEFAULT);
-    $app['db']->executeUpdate('INSERT INTO `captchas` (`uuid`,`hashed`) VALUES (?,?);', array($actualuuid, password_hash($builder->getPhrase(), PASSWORD_DEFAULT)));
+//    $app['db']->executeUpdate('INSERT INTO `captchas` (`uuid`,`hashed`) VALUES (?,?);', array($actualuuid, password_hash($builder->getPhrase(), PASSWORD_DEFAULT)));
     return $app->json(array('uuid'  => $actualuuid, 'image' => $builder->inline()), 201);
 });
 
@@ -58,5 +60,5 @@ $app->get('/version/', function () use ($app) {
     return $app->json(array('hash' => getenv("SOURCE_VERSION")));
 });
 
-$app['debug'] = getenv('DEBUG');
+//$app['debug'] = getenv('DEBUG');
 $app->run();

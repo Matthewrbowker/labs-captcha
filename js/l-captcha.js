@@ -3,10 +3,7 @@
 //  alert( "Load was performed." );
 //});
 //$("div.l-captcha").html("Next Step...");
-$.ajax({
-  url: "../staging/captcha/",
-  cache: false,
-  type: "GET",
+$.ajax( "../api/captcha/", {
   headers: {"Authorization": "77d240b5f5e441e3902b133ad0e7a281"}
 })
   .done(function( data ) {
