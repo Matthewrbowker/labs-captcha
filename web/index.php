@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 $app = new Silex\Application();
 $builder = new CaptchaBuilder;
 $uuid = Uuid::uuid4();
-$ignoreAllEffects = true
+$ignoreAllEffects = true;
 $builder->setIgnoreAllEffects($ignoreAllEffects);
 $builder->build();
 
