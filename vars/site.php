@@ -60,7 +60,7 @@ class site
         ?>
         <noscript>
             <div class="alert alert-danger">
-                Portions of this tool require Javascript. Please enable Javasript in your browser to continue.
+                Portions of this tool require Javascript. Please enable Javascript in your browser to continue.
             </div>
         </noscript>
 
